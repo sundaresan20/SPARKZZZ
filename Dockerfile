@@ -58,5 +58,6 @@ WORKDIR /root/userbot/
 RUN chmod +x /usr/local/bin/*
 RUN pip3 install -r requirements.txt
 RUN “touch ~/.hushlogin”
+# © SPARKZZZ 2020 @vishnu175
 ENV PATH="/home/userbot/bin:$PATH"
 CMD ["bash","sparkzzz/start.sh"]
