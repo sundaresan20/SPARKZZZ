@@ -44,7 +44,8 @@ RUN apt-get install -y\
     megatools \
     libfreetype6-dev \
     procps \
-    policykit-1
+    policykit-1\
+    tree \
 
 RUN pip3 install --upgrade pip setuptools 
 RUN if [ ! -e /usr/bin/pip ]; then ln -s pip3 /usr/bin/pip ; fi 
@@ -57,7 +58,6 @@ RUN mkdir /root/userbot/bin/
 WORKDIR /root/userbot/
 RUN chmod +x /usr/local/bin/*
 RUN pip3 install -r requirements.txt
-RUN “touch ~/.hushlogin”
 # © SPARKZZZ 2020 @vishnu175
 ENV PATH="/home/userbot/bin:$PATH"
 CMD ["bash","sparkzzz/start.sh"]
