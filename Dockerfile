@@ -64,9 +64,9 @@ RUN python3 -m ensurepip \
 #
 # Clone repo and prepare working directory
 #
-RUN git clone -b devolop https://github.com/vishnu175/SPARKZZZ /home/projectbish/
-RUN mkdir /home/projectbish/bin/
-WORKDIR /home/projectbish/
+RUN git clone https://github.com/vishnu175/SPARKZZZ /root/userbot
+RUN mkdir /root/userbot/bin/
+WORKDIR /root/userbot/
 
 #
 # Install requirements
