@@ -71,7 +71,7 @@ WORKDIR /root/userbot/
 #
 # Install requirements
 #
-ADD https://raw.githubusercontent.com/vishnu175/SPARKZZZ/devolop/requirements.txt
+ADD https://raw.githubusercontent.com/vishnu175/SPARKZZZ/devolop/requirements.txt requirements.txt
 RUN pip3 install -r requirements.txt
 ENV PATH="/home/userbot/bin:$PATH"
 CMD ["bash","sparkzzz/start.sh"]
