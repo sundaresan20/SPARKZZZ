@@ -63,7 +63,6 @@ RUN python3 -m ensurepip \
 RUN git clone https://github.com/vishnu175/SPARKZZZ /root/userbot
 RUN mkdir /root/userbot/bin/
 WORKDIR /root/userbot/
-RUN chmod +x /usr/local/bin/*
 ADD https://raw.githubusercontent.com/vishnu175/SPARKZZZ/devolop/requirements.txt requirements.txt
 RUN pip3 install -r requirements.txt
 ENV PATH="/home/userbot/bin:$PATH"
