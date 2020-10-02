@@ -1,77 +1,72 @@
-# We're using Alpine Edge
-FROM alpine:edge
+# sparkzzz using Debian Slim Buster image
+FROM python:3.8.6-slim-buster
 
-#
-# We have to uncomment Community repo for some packages
-#
-RUN sed -e 's;^#http\(.*\)/edge/community;http\1/edge/community;g' -i /etc/apk/repositories
+ENV PIP_NO_CACHE_DIR 1
 
-#
-# Installing Packages
-#
-RUN apk add --no-cache=true --update \
-    coreutils \
+RUN sed -i.bak 's/us-west-2\.ec2\.//' /etc/apt/sources.list
+
+# Installing Required Packages
+RUN apt update && apt upgrade -y && \
+    apt install --no-install-recommends -y \
+    debian-keyring \
+    debian-archive-keyring \
     bash \
-    build-base \
-    bzip2-dev \
+    bzip2 \
     curl \
     figlet \
     gcc \
-    g++ \
     git \
+    sudo \
     util-linux \
-    libevent \
-    jpeg-dev \
     libffi-dev \
-    libpq \
+    libjpeg-dev \
+    libjpeg62-turbo-dev \
     libwebp-dev \
-    libxml2 \
-    libxml2-dev \
-    libxslt-dev \
-    linux-headers \
+    linux-headers-amd64 \
+    musl-dev \
     musl \
     neofetch \
-    openssl-dev \
-    postgresql \
-    postgresql-client \
-    postgresql-dev \
+    python3-lxml \
+    python3-psycopg2 \
+    libpq-dev \
+    libcurl4-openssl-dev \
+    libxml2-dev \
+    libxslt1-dev \
+    python3-pip \
+    python3-requests \
+    python3-tz \
+    python3-aiohttp \
     openssl \
     pv \
     jq \
     wget \
     python3 \
     python3-dev \
-    readline-dev \
-    sqlite \
-    ffmpeg \
-    sqlite-dev \
+    libreadline-dev \
+    libyaml-dev \
     sudo \
-    chromium \
-    chromium-chromedriver \
-    zlib-dev \
-    jpeg \
-    zip \
-    freetype-dev
+    zlib1g \
+    ffmpeg \
+    libssl-dev \
+    libopus0 \
+    libopus-dev \
+    && rm -rf /var/lib/apt/lists /var/cache/apt/archives /tmp
+    
+# Pypi package Repo upgrade
+RUN pip3 install --upgrade pip setuptools
 
-RUN python3 -m ensurepip \
-    && pip3 install --upgrade pip setuptools \
-    && pip3 install wheel \
-    && rm -r /usr/lib/python*/ensurepip && \
-    if [ ! -e /usr/bin/pip ]; then ln -s pip3 /usr/bin/pip ; fi && \
-    if [[ ! -e /usr/bin/python ]]; then ln -sf /usr/bin/python3 /usr/bin/python; fi && \
-    rm -r /root/.cache
+# Copy Python Requirements to /root/nana
+RUN git clone -b devolop https://github.com/vishnu175/SPARKZZZ.git /root/userbot
+WORKDIR /root/userbot
 
-#
-# Clone repo and prepare working directory
-#
-RUN git clone https://github.com/vishnu175/SPARKZZZ /root/userbot
-RUN mkdir /root/userbot/bin/
-WORKDIR /root/userbot/
+# #Copy config file to /root/nana/nana
+# COPY ./userbot/userbot.ini.sample ./userbot/userbot.ini.sample* /root/userbot/userbot/
 
-#
-# Install requirements
-#
-ADD https://raw.githubusercontent.com/vishnu175/SPARKZZZ/devolop/requirements.txt requirements.txt
-RUN pip3 install -r requirements.txt
 ENV PATH="/home/userbot/bin:$PATH"
+
+# Install requirements
+RUN sudo pip3 install -U -r requirements.txt
+
+# Starting Worker
+# (c) SPARKZZZ 2020 VISHNU175
 CMD ["bash","sparkzzz/start.sh"]
